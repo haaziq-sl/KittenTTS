@@ -4,15 +4,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kittentts"
-version = "0.8.1"
+version = "0.8.2"
 description = "Ultra-lightweight text-to-speech model with just 15 million parameters"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.13"
 license = {text = "Apache 2.0"}
 authors = [
     {name = "KittenML"}
 ]
-keywords = ["text-to-speech", "tts", "speech-synthesis", "neural-networks", "onnx"]
+keywords = ["text-to-speech", "tts", "speech-synthesis", "neural-networks", "native-inference", "cpp"]
 classifiers = [
     "Topic :: Multimedia :: Sound/Audio :: Speech",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
@@ -20,7 +20,7 @@ classifiers = [
 dependencies = [
     "espeakng_loader",
     "phonemizer",
-    "onnxruntime",
+    "kitten-inference==0.1.0",
     "soundfile",
     "numpy",
     "huggingface_hub",
@@ -36,4 +36,4 @@ where = ["."]
 include = ["kittentts*"]
 
 [tool.setuptools.package-data]
-kittentts = ["*.json", "*.txt", "*.onnx"]
+kittentts = ["*.json", "*.txt", "model_defs/*.json"]
