@@ -21,9 +21,12 @@ For example:
 
 ```text
 kitten_inference-0.1.0-cp38-cp38-manylinux_2_28_x86_64.whl
+kitten_inference-0.1.0-cp314-cp314-manylinux_2_28_aarch64.whl
 kitten_inference-0.1.0-cp314-cp314-win_amd64.whl
+kitten_inference-0.1.0-cp314-cp314-win_arm64.whl
 kitten_inference-0.1.0-cp313-cp313-android_24_arm64_v8a.whl
 kitten_inference-0.1.0-cp314-cp314-macosx_11_0_arm64.whl
+kitten_inference-0.1.0-cp314-cp314-macosx_11_0_x86_64.whl
 ```
 
 `kittentts` can support Python 3.8+ once PyPI has matching
@@ -36,14 +39,21 @@ The native engine GitHub Actions workflow builds:
 | Target | Python tags |
 |---|---|
 | Linux x86_64 CPU | `cp38` through `cp314` |
+| Linux ARM64 / aarch64 CPU | `cp38` through `cp314` |
 | Windows x86_64 CPU | `cp38` through `cp314` |
+| Windows ARM64 CPU | `cp39` through `cp314` |
 | macOS ARM64 CPU/Metal | `cp38` through `cp314` |
+| macOS x86_64 CPU | `cp38` through `cp314` |
 | Android ARM64 / Termux | `cp313` experimental |
 
 Android starts at CPython 3.13 because those are the Android CPython tags
 available in current cibuildwheel releases. It is currently non-blocking for
 PyPI publishing while the Android CMake/Python development-header path is being
-stabilized.
+stabilized. Windows ARM64 starts at CPython 3.9 because current cibuildwheel
+releases do not provide `cp38-win_arm64`.
+
+ARM64 wheels are built for modern ARMv8.2 dot-product-capable cores. Older ARM
+devices without dot-product support remain unvalidated.
 
 ## Release Checklist
 

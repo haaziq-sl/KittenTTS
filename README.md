@@ -13,7 +13,7 @@
 
 > **New:** Kitten TTS v0.8.2 uses the Kitten Inference Engine (`kitten-inference`).
 
-Kitten TTS is an open-source, lightweight text-to-speech library built on the Kitten Inference Engine. With models ranging from 15M to 80M parameters, it delivers high-quality voice synthesis on CPU wheels for Linux, Windows, Android/Termux, and Apple Silicon.
+Kitten TTS is an open-source, lightweight text-to-speech library built on the Kitten Inference Engine. With models ranging from 15M to 80M parameters, it delivers high-quality voice synthesis on CPU wheels for Linux, Windows, macOS, and Android/Termux.
 
 > **Status:** Developer preview -- APIs may change between releases.
 
@@ -36,7 +36,7 @@ Kitten TTS is an open-source, lightweight text-to-speech library built on the Ki
 ## Features
 
 - **Ultra-lightweight** -- Model sizes from 25 MB (int8) to 80 MB, suitable for edge deployment
-- **Kitten Inference Engine** -- C++ backend for Linux, Windows, Android, and Apple Silicon CPU/Metal
+- **Kitten Inference Engine** -- C++ backend for Linux, Windows, macOS, and Android CPU runtimes, with Metal available on Apple Silicon
 - **8 built-in voices** -- Bella, Jasper, Luna, Bruno, Rosie, Hugo, Kiki, and Leo
 - **Stable Python API** -- The existing `KittenTTS(...).generate(...)` API remains in place
 - **Text preprocessing** -- Built-in pipeline handles numbers, currencies, units, and more
@@ -119,15 +119,18 @@ python -m pip install ~/storage/downloads/kittentts-0.8.2-py3-none-any.whl
 | Target | Python | Engine wheel |
 |---|---|---|
 | Linux x86_64 CPU | CPython 3.8-3.14 | `kitten_inference-*-cp3*-cp3*-manylinux_*_x86_64.whl` |
+| Linux ARM64 / aarch64 CPU | CPython 3.8-3.14 | `kitten_inference-*-cp3*-cp3*-manylinux_*_aarch64.whl` |
 | Windows x86_64 CPU | CPython 3.8-3.14 | `kitten_inference-*-cp3*-cp3*-win_amd64.whl` |
+| Windows ARM64 CPU | CPython 3.9-3.14 | `kitten_inference-*-cp3*-cp3*-win_arm64.whl` |
 | macOS ARM64 / Apple Silicon CPU+Metal | CPython 3.8-3.14 | `kitten_inference-*-cp3*-cp3*-macosx_11_0_arm64.whl` |
+| macOS x86_64 / Intel CPU | CPython 3.8-3.14 | `kitten_inference-*-cp3*-cp3*-macosx_11_0_x86_64.whl` |
 | Android ARM64 / Termux | CPython 3.13 experimental | `kitten_inference-*-cp313-cp313-android_*_arm64_v8a.whl` |
 
 Support notes:
 
 - The native wheel set covers only the targets listed above.
-- Not covered by the current wheels: Intel Mac, Linux ARM64, Windows ARM64, CUDA, and unusual Python/platform tags not present on the `kitten-inference` release.
-- Older Android ARM64 devices without ARMv8.2 dot-product support have not been validated and may break.
+- Not covered by the current wheels: Windows x86 32-bit, Linux x86 32-bit, Linux musl/Alpine, CUDA, and unusual Python/platform tags not present on the `kitten-inference` release.
+- ARM64 wheels are built for modern ARMv8.2 dot-product-capable cores. Older ARM devices without dot-product support have not been validated and may break.
 
 ### Basic Usage
 
@@ -221,7 +224,7 @@ Returns a list of available voice names: `['Bella', 'Jasper', 'Luna', 'Bruno', '
 
 ## System Requirements
 
-- **Operating system:** Linux x86_64, Windows x86_64, Android ARM64/Termux, or macOS ARM64/Apple Silicon for the current wheels
+- **Operating system:** Linux x86_64, Linux ARM64, Windows x86_64, Windows ARM64, macOS x86_64, macOS ARM64/Apple Silicon, or Android ARM64/Termux for the current wheels
 - **Python:** CPython 3.8+ for KittenTTS; the native `kitten-inference` wheel must match your Python version and platform
 - **Hardware:** CPU by default; Metal on Apple Silicon with `backend="metal"`
 - **Disk space:** Depends on the native model variant and weights bundle
