@@ -1,0 +1,146 @@
+name: Build and test KittenTTS wheel
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - ".github/workflows/package.yml"
+      - "kittentts/**"
+      - "tests/**"
+      - "README.md"
+      - "MANIFEST.in"
+      - "pyproject.toml"
+      - "setup.py"
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  unit-tests:
+    name: Unit tests Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version:
+          - "3.8"
+          - "3.9"
+          - "3.10"
+          - "3.11"
+          - "3.12"
+          - "3.13"
+          - "3.14"
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install package without native runtime deps
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e . --no-deps
+
+      - name: Run tests
+        run: python -m unittest discover -s tests
+
+  build:
+    name: Build py3-none-any wheel and sdist
+    needs: unit-tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Build distribution
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install build twine
+          python -m build
+          python -m twine check dist/*
+
+      - name: Verify wheel tag
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          wheels = sorted(Path("dist").glob("kittentts-*.whl"))
+          assert len(wheels) == 1, wheels
+          wheel = wheels[0]
+          print(wheel)
+          assert wheel.name.endswith("-py3-none-any.whl"), wheel.name
+          PY
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: kittentts-dist
+          path: dist/*
+
+  installed-wheel-smoke:
+    name: ${{ matrix.os }} Python ${{ matrix.python-version }} installed wheel
+    needs: build
+    if: github.event_name != 'pull_request'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python-version: "3.8"
+          - os: ubuntu-latest
+            python-version: "3.9"
+          - os: ubuntu-latest
+            python-version: "3.10"
+          - os: ubuntu-latest
+            python-version: "3.11"
+          - os: ubuntu-latest
+            python-version: "3.12"
+          - os: ubuntu-latest
+            python-version: "3.13"
+          - os: ubuntu-latest
+            python-version: "3.14"
+          - os: windows-latest
+            python-version: "3.8"
+          - os: windows-latest
+            python-version: "3.11"
+          - os: windows-latest
+            python-version: "3.14"
+          - os: macos-26
+            python-version: "3.8"
+          - os: macos-26
+            python-version: "3.11"
+          - os: macos-26
+            python-version: "3.14"
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - uses: actions/download-artifact@v7
+        with:
+          name: kittentts-dist
+          path: dist
+
+      - name: Install built KittenTTS wheel with PyPI native deps
+        run: |
+          python -m pip install --upgrade pip
+          python -c "from pathlib import Path; import subprocess, sys; wheel = next(Path('dist').glob('kittentts-*-py3-none-any.whl')); subprocess.check_call([sys.executable, '-m', 'pip', 'install', '--only-binary=kitten-inference', str(wheel)])"
+
+      - name: Smoke test installed wheel
+        run: |
+          python -c "import importlib.metadata as md; import kittentts; import model_inference as mi; print('kittentts', md.version('kittentts')); print('kitten-inference', md.version('kitten-inference')); print(mi.__file__); assert mi.set_backend('cpu'); assert mi.active_backend() == 'cpu'; assert kittentts.normalize_text('Fig. 2') == 'Figure two'"
+
+      - name: Run tests against installed wheel
+        run: python -m unittest discover -s tests

@@ -7,13 +7,21 @@ name = "kittentts"
 version = "0.8.2"
 description = "Ultra-lightweight text-to-speech model with just 15 million parameters"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.8"
 license = {text = "Apache 2.0"}
 authors = [
     {name = "KittenML"}
 ]
 keywords = ["text-to-speech", "tts", "speech-synthesis", "neural-networks", "native-inference", "cpp"]
 classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Multimedia :: Sound/Audio :: Speech",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]

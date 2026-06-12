@@ -88,26 +88,45 @@ Try Kitten TTS directly in your browser on [Hugging Face Spaces](https://hugging
 
 ### Installation
 
-Install the KittenTTS wheel from the GitHub release:
+KittenTTS is a pure Python wheel for CPython 3.8+. It depends on
+`kitten-inference`, which is published as platform-specific native wheels. Pip
+selects the native wheel that matches your Python version, OS, and CPU.
 
 ```bash
 pip install https://github.com/KittenML/KittenTTS/releases/download/0.8.2/kittentts-0.8.2-py3-none-any.whl
 ```
 
-This wheel depends on `kitten-inference==0.1.0`, so pip downloads the matching
-native engine wheel from PyPI for supported platforms.
+If pip reports that no `kitten-inference` distribution is available, use one of
+the Python/platform combinations listed below or build the native engine wheel
+from source.
+
+Android / Termux:
+
+```bash
+pkg install -y python espeak libsndfile
+python -m pip install --upgrade pip
+python -m pip install https://github.com/KittenML/KittenTTS/releases/download/0.8.2/kittentts-0.8.2-py3-none-any.whl
+```
+
+For local release testing, put `kittentts-0.8.2-py3-none-any.whl` in Android
+Downloads and replace the URL with:
+
+```bash
+termux-setup-storage
+python -m pip install ~/storage/downloads/kittentts-0.8.2-py3-none-any.whl
+```
 
 | Target | Python | Engine wheel |
 |---|---|---|
-| Linux x86_64 CPU | CPython 3.14 | `kitten_inference-0.1.0-cp314-cp314-manylinux_2_27_x86_64.whl` |
-| Windows x86_64 CPU | CPython 3.14 | `kitten_inference-0.1.0-cp314-cp314-win_amd64.whl` |
-| Android ARM64 / Termux | CPython 3.13 | `kitten_inference-0.1.0-cp313-cp313-android_24_arm64_v8a.whl` |
-| macOS ARM64 / Apple Silicon CPU+Metal | CPython 3.14 | `kitten_inference-0.1.0-cp314-cp314-macosx_11_0_arm64.whl` |
+| Linux x86_64 CPU | CPython 3.8-3.14 | `kitten_inference-*-cp3*-cp3*-manylinux_*_x86_64.whl` |
+| Windows x86_64 CPU | CPython 3.8-3.14 | `kitten_inference-*-cp3*-cp3*-win_amd64.whl` |
+| macOS ARM64 / Apple Silicon CPU+Metal | CPython 3.8-3.14 | `kitten_inference-*-cp3*-cp3*-macosx_11_0_arm64.whl` |
+| Android ARM64 / Termux | CPython 3.13 experimental | `kitten_inference-*-cp313-cp313-android_*_arm64_v8a.whl` |
 
 Support notes:
 
-- The current release covers only the targets listed above.
-- Not covered by the current wheels: Intel Mac, Linux ARM64, Windows ARM64, CUDA, Python versions other than the listed CPython versions, and older x86 CPUs without AVX2/FMA.
+- The native wheel set covers only the targets listed above.
+- Not covered by the current wheels: Intel Mac, Linux ARM64, Windows ARM64, CUDA, and unusual Python/platform tags not present on the `kitten-inference` release.
 - Older Android ARM64 devices without ARMv8.2 dot-product support have not been validated and may break.
 
 ### Basic Usage
@@ -203,7 +222,7 @@ Returns a list of available voice names: `['Bella', 'Jasper', 'Luna', 'Bruno', '
 ## System Requirements
 
 - **Operating system:** Linux x86_64, Windows x86_64, Android ARM64/Termux, or macOS ARM64/Apple Silicon for the current wheels
-- **Python:** CPython 3.14 on Linux x86_64, Windows x86_64, and macOS ARM64; CPython 3.13 on Android ARM64/Termux
+- **Python:** CPython 3.8+ for KittenTTS; the native `kitten-inference` wheel must match your Python version and platform
 - **Hardware:** CPU by default; Metal on Apple Silicon with `backend="metal"`
 - **Disk space:** Depends on the native model variant and weights bundle
 
