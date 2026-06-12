@@ -229,8 +229,9 @@ Returns a list of available voice names: `['Bella', 'Jasper', 'Luna', 'Bruno', '
 - **Hardware:** CPU by default; Metal on Apple Silicon with `backend="metal"`
 - **Disk space:** Depends on the native model variant and weights bundle
 
-The current wheel set is not a universal hardware claim. Older Intel/AMD CPUs,
-Intel Macs, Linux ARM64, Windows ARM64, and older Android devices should be
+The current wheel set is not a universal hardware claim. Older x86 CPUs, older
+ARM devices without ARMv8.2 dot-product support, musl/Alpine Linux, 32-bit
+platforms, and platform tags outside the published wheel matrix should be
 treated as unvalidated unless a separate compatible wheel and smoke test are
 provided.
 
