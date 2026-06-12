@@ -20,10 +20,10 @@ one kitten-inference wheel per CPython ABI + OS + CPU architecture
 For example:
 
 ```text
-kitten_inference-0.1.0-cp38-cp38-manylinux_2_28_x86_64.whl
-kitten_inference-0.1.0-cp314-cp314-win_amd64.whl
-kitten_inference-0.1.0-cp313-cp313-android_24_arm64_v8a.whl
-kitten_inference-0.1.0-cp314-cp314-macosx_11_0_arm64.whl
+kitten_inference-0.1.1-cp38-cp38-manylinux_2_28_x86_64.whl
+kitten_inference-0.1.1-cp314-cp314-win_amd64.whl
+kitten_inference-0.1.1-cp313-cp313-android_24_arm64_v8a.whl
+kitten_inference-0.1.1-cp314-cp314-macosx_11_0_arm64.whl
 ```
 
 `kittentts` can support Python 3.8+ once PyPI has matching
@@ -48,7 +48,7 @@ stabilized.
 ## Release Checklist
 
 1. Build and upload the `kitten-inference` native wheels first.
-2. Confirm `pip install kitten-inference==0.1.0` works in fresh environments for
+2. Confirm `pip install kitten-inference==0.1.1` works in fresh environments for
    each target Python/platform.
 3. Build the `kittentts` pure Python wheel.
 4. Install `kittentts` in fresh environments and run the package/native import

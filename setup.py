@@ -35,7 +35,7 @@ setup(
     install_requires=[
         "espeakng_loader",
         "phonemizer",
-        "kitten-inference==0.1.0",
+        "kitten-inference==0.1.1",
         "soundfile",
         "numpy",
         "huggingface_hub",
