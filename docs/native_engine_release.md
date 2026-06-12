@@ -63,3 +63,7 @@ devices without dot-product support remain unvalidated.
 3. Build the `kittentts` pure Python wheel.
 4. Install `kittentts` in fresh environments and run the package/native import
    smoke tests.
+5. Run the audio smoke job. It installs the built `kittentts` wheel, resolves
+   `kitten-inference` from PyPI, generates WAV files for multiple nano voices
+   and model variants, and checks that faster speed settings produce shorter
+   audio than slower settings.

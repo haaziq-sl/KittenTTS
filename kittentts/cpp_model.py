@@ -1,5 +1,4 @@
 import os
-import warnings
 
 import espeakng_loader
 import numpy as np
@@ -192,7 +191,22 @@ class KittenTTS_1_Cpp:
         return style[:128].copy(), style[128:].copy()
 
     def _effective_speed(self, voice, speed):
-        return speed * self.speed_priors.get(voice, 1.0)
+        return float(speed) * float(self.speed_priors.get(voice, 1.0))
+
+    def _set_native_speed(self, speed):
+        speed = float(speed)
+        if not np.isfinite(speed) or speed <= 0.0:
+            raise ValueError("speed must be a positive finite value")
+
+        set_speed = getattr(self.session, "set_speed", None)
+        if set_speed is None:
+            if np.isclose(speed, 1.0):
+                return
+            raise RuntimeError(
+                "The installed kitten-inference wheel does not support speed control. "
+                "Install the latest kitten-inference wheel for this Python/platform."
+            )
+        set_speed(speed)
 
     def normalize_text(self, text, locale="en-US", return_spans=False):
         return normalize_text(text, locale=locale, return_spans=return_spans)
@@ -216,13 +230,7 @@ class KittenTTS_1_Cpp:
     def generate_single_chunk(self, text, voice=DEFAULT_VOICE, speed=1.0):
         voice = self._resolve_voice(voice)
         effective_speed = self._effective_speed(voice, speed)
-        if effective_speed != 1.0:
-            warnings.warn(
-                "The native model_inference Kitten graph does not expose a speed input; "
-                "the speed argument is currently ignored.",
-                RuntimeWarning,
-                stacklevel=2,
-            )
+        self._set_native_speed(effective_speed)
 
         ids = self._phoneme_ids(text)
         style_dec, style_pred = self._style_for_voice(voice, text, len(ids))

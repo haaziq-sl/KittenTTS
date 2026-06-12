@@ -149,9 +149,8 @@ sf.write("output.wav", audio, 24000)
 ### Advanced Usage
 
 ```python
-# The speed argument is accepted for API compatibility.
-# Current native Kitten graphs do not expose a speed input, so non-1.0 values are ignored.
-audio = model.generate("Hello, world.", voice="Luna", speed=1.0)
+# speed > 1.0 speaks faster; speed < 1.0 speaks slower.
+audio = model.generate("Hello, world.", voice="Luna", speed=1.2)
 
 # Save directly to a file
 model.generate_to_file("Hello, world.", "output.wav", voice="Bruno", speed=1.0)
@@ -185,7 +184,7 @@ Synthesize speech from text, returning a NumPy array of audio samples at 24 kHz.
 |---|---|---|---|
 | `text` | `str` | -- | Input text to synthesize |
 | `voice` | `str` | `"expr-voice-5-m"` | Voice name (see available voices) |
-| `speed` | `float` | `1.0` | Accepted for API compatibility; native graphs currently ignore non-1.0 values |
+| `speed` | `float` | `1.0` | Speech speed multiplier; values above `1.0` are faster and values below `1.0` are slower |
 | `clean_text` | `bool` | `False` | Preprocess text (expand numbers, currencies, etc.) |
 
 ### `model.generate_to_file(text, output_path, voice, speed, sample_rate, clean_text)`
@@ -197,7 +196,7 @@ Synthesize speech and write directly to an audio file.
 | `text` | `str` | -- | Input text to synthesize |
 | `output_path` | `str` | -- | Path to save the audio file |
 | `voice` | `str` | `"expr-voice-5-m"` | Voice name |
-| `speed` | `float` | `1.0` | Accepted for API compatibility; native graphs currently ignore non-1.0 values |
+| `speed` | `float` | `1.0` | Speech speed multiplier; values above `1.0` are faster and values below `1.0` are slower |
 | `sample_rate` | `int` | `24000` | Audio sample rate in Hz |
 | `clean_text` | `bool` | `True` | Preprocess text (expand numbers, currencies, etc.) |
 
