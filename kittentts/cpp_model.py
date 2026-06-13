@@ -119,7 +119,7 @@ class KittenTTS_1_Cpp:
 
         self.available_voices = sorted(self._available_voice_names())
         self.all_voice_names = [
-            alias for alias, target in DEFAULT_VOICE_ALIASES.items()
+            alias for alias, target in self.voice_aliases.items()
             if target in self.available_voices
         ] or self.available_voices
 
