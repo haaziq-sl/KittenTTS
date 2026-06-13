@@ -53,7 +53,10 @@ Kitten TTS is an open-source, lightweight text-to-speech library built on the Ki
 | kitten-tts-nano | 15M | native weights | `KittenML/kitten-tts-nano-0.1` via [KittenML/meownn-models](https://huggingface.co/KittenML/meownn-models) |
 | kitten-tts-nano (int8) | 15M | native weights | `KittenML/kitten-tts-nano-0.8-int8` via [KittenML/meownn-models](https://huggingface.co/KittenML/meownn-models) |
 
-Built-in model aliases use packaged arch JSONs and download W1X1 weights plus voice styles from the native weights repository. Custom native model repositories may also publish `CPP1` configs; see [Native Engine Release](docs/native_engine_release.md).
+Built-in model aliases use packaged arch JSONs and download W1X1 weights plus
+voice styles from the native weights repository. Custom native model
+repositories may also publish `CPP1` configs with `arch_file`, `weights_file`,
+and voice file entries in `config.json`.
 For the 15M FP32 model, `KittenML/kitten-tts-nano-0.8` and
 `KittenML/kitten-tts-nano-0.8-fp32` are accepted aliases for the same native
 weights.
