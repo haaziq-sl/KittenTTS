@@ -58,7 +58,7 @@ devices without dot-product support remain unvalidated.
 ## Release Checklist
 
 1. Build and upload the `kitten-inference` native wheels first.
-2. Confirm `pip install kitten-inference==0.1.0` works in fresh environments for
+2. Confirm `pip install kitten-inference==0.1.1` works in fresh environments for
    each target Python/platform.
 3. Build the `kittentts` pure Python wheel.
 4. Install `kittentts` in fresh environments and run the package/native import

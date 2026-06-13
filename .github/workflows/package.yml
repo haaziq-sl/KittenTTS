@@ -181,7 +181,7 @@ jobs:
 
       - name: Smoke test installed wheel
         run: |
-          python -c "import importlib.metadata as md; import kittentts; import model_inference as mi; print('kittentts', md.version('kittentts')); print('kitten-inference', md.version('kitten-inference')); print(mi.__file__); assert mi.set_backend('cpu'); assert mi.active_backend() == 'cpu'; assert kittentts.normalize_text('Fig. 2') == 'Figure two'"
+          python -c "import importlib.metadata as md; import kittentts; import model_inference as mi; print('kittentts', md.version('kittentts')); print('kitten-inference', md.version('kitten-inference')); print(mi.__file__); assert md.version('kitten-inference') == '0.1.1'; assert hasattr(mi.InferenceModel, 'set_speed'); assert mi.set_backend('cpu'); assert mi.active_backend() == 'cpu'; assert kittentts.normalize_text('Fig. 2') == 'Figure two'"
 
       - name: Run tests against installed wheel
         run: python -m unittest discover -s tests
