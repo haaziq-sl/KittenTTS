@@ -20,17 +20,17 @@ one kitten-inference wheel per CPython ABI + OS + CPU architecture
 For example:
 
 ```text
-kitten_inference-0.1.0-cp38-cp38-manylinux_2_28_x86_64.whl
-kitten_inference-0.1.0-cp314-cp314-manylinux_2_28_aarch64.whl
-kitten_inference-0.1.0-cp314-cp314-win_amd64.whl
-kitten_inference-0.1.0-cp314-cp314-win_arm64.whl
-kitten_inference-0.1.0-cp313-cp313-android_24_arm64_v8a.whl
-kitten_inference-0.1.0-cp314-cp314-macosx_11_0_arm64.whl
-kitten_inference-0.1.0-cp314-cp314-macosx_11_0_x86_64.whl
+kitten_inference-0.1.1-cp38-cp38-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
+kitten_inference-0.1.1-cp314-cp314-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl
+kitten_inference-0.1.1-cp314-cp314-win_amd64.whl
+kitten_inference-0.1.1-cp314-cp314-win_arm64.whl
+kitten_inference-0.1.1-cp313-cp313-android_24_arm64_v8a.whl
+kitten_inference-0.1.1-cp314-cp314-macosx_11_0_arm64.whl
+kitten_inference-0.1.1-cp314-cp314-macosx_11_0_x86_64.whl
 ```
 
-`kittentts` can support Python 3.8+ once PyPI has matching
-`kitten-inference` wheels for the user's platform.
+`kittentts` is pure Python 3.8+, but audio generation requires a matching
+`kitten-inference` wheel for the user's Python version and platform.
 
 ## Automated Matrix
 
@@ -46,10 +46,8 @@ The native engine GitHub Actions workflow builds:
 | macOS x86_64 CPU | `cp38` through `cp314` |
 | Android ARM64 / Termux | `cp313` experimental |
 
-Android starts at CPython 3.13 because those are the Android CPython tags
-available in current cibuildwheel releases. It is currently non-blocking for
-PyPI publishing while the Android CMake/Python development-header path is being
-stabilized. Windows ARM64 starts at CPython 3.11 because that is the currently
+Android starts at CPython 3.13 because that is the currently published Android
+wheel tag. Windows ARM64 starts at CPython 3.11 because that is the currently
 published Windows ARM64 wheel range.
 
 ARM64 wheels are built for modern ARMv8.2 dot-product-capable cores. Older ARM

@@ -2,7 +2,7 @@ from kittentts.preprocess import NormalizedSpan, NormalizedTextResult, normalize
 
 __version__ = "0.8.2"
 __author__ = "KittenML"
-__description__ = "Ultra-lightweight text-to-speech model with just 15 million parameters"
+__description__ = "Ultra-lightweight text-to-speech models powered by native inference"
 
 __all__ = [
     "get_model",

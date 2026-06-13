@@ -54,6 +54,9 @@ Kitten TTS is an open-source, lightweight text-to-speech library built on the Ki
 | kitten-tts-nano (int8) | 15M | native weights | `KittenML/kitten-tts-nano-0.8-int8` via [KittenML/meownn-models](https://huggingface.co/KittenML/meownn-models) |
 
 Built-in model aliases use packaged arch JSONs and download W1X1 weights plus voice styles from the native weights repository. Custom native model repositories may also publish `CPP1` configs; see [Native Engine Release](docs/native_engine_release.md).
+For the 15M FP32 model, `KittenML/kitten-tts-nano-0.8` and
+`KittenML/kitten-tts-nano-0.8-fp32` are accepted aliases for the same native
+weights.
 
 ## Benchmarks
 
@@ -89,8 +92,9 @@ Try Kitten TTS directly in your browser on [Hugging Face Spaces](https://hugging
 ### Installation
 
 KittenTTS is a pure Python wheel for CPython 3.8+. It depends on
-`kitten-inference`, which is published as platform-specific native wheels. Pip
-selects the native wheel that matches your Python version, OS, and CPU.
+`kitten-inference==0.1.1`, which is published as platform-specific native
+wheels. Pip selects the native wheel that matches your Python version, OS, and
+CPU.
 
 ```bash
 pip install https://github.com/KittenML/KittenTTS/releases/download/0.8.2/kittentts-0.8.2-py3-none-any.whl
@@ -100,13 +104,17 @@ If pip reports that no `kitten-inference` distribution is available, use one of
 the Python/platform combinations listed below or build the native engine wheel
 from source.
 
-Android / Termux:
+Android / Termux currently requires the CPython 3.13 ARM64 wheel:
 
 ```bash
 pkg install -y python espeak libsndfile
+python --version
 python -m pip install --upgrade pip
 python -m pip install https://github.com/KittenML/KittenTTS/releases/download/0.8.2/kittentts-0.8.2-py3-none-any.whl
 ```
+
+If Termux reports a Python version other than 3.13, pip will not select the
+current Android wheel.
 
 For local release testing, put `kittentts-0.8.2-py3-none-any.whl` in Android
 Downloads and replace the URL with:
@@ -138,7 +146,7 @@ Support notes:
 from kittentts import KittenTTS
 
 model = KittenTTS("KittenML/kitten-tts-mini-0.8")
-# Smaller old-model option:
+# Smaller/faster option:
 # model = KittenTTS("KittenML/kitten-tts-nano-0.1")
 audio = model.generate("This high-quality TTS model runs without a GPU.", voice="Jasper")
 
@@ -183,7 +191,7 @@ Synthesize speech from text, returning a NumPy array of audio samples at 24 kHz.
 | Parameter | Type | Default | Description |
 |---|---|---|---|
 | `text` | `str` | -- | Input text to synthesize |
-| `voice` | `str` | `"expr-voice-5-m"` | Voice name (see available voices) |
+| `voice` | `str` | `"expr-voice-5-m"` | Voice alias such as `"Bella"` or native voice ID |
 | `speed` | `float` | `1.0` | Speech speed multiplier; values above `1.0` are faster and values below `1.0` are slower |
 | `clean_text` | `bool` | `False` | Preprocess text (expand numbers, currencies, etc.) |
 
@@ -195,7 +203,7 @@ Synthesize speech and write directly to an audio file.
 |---|---|---|---|
 | `text` | `str` | -- | Input text to synthesize |
 | `output_path` | `str` | -- | Path to save the audio file |
-| `voice` | `str` | `"expr-voice-5-m"` | Voice name |
+| `voice` | `str` | `"expr-voice-5-m"` | Voice alias such as `"Bella"` or native voice ID |
 | `speed` | `float` | `1.0` | Speech speed multiplier; values above `1.0` are faster and values below `1.0` are slower |
 | `sample_rate` | `int` | `24000` | Audio sample rate in Hz |
 | `clean_text` | `bool` | `True` | Preprocess text (expand numbers, currencies, etc.) |
@@ -219,7 +227,9 @@ When `return_spans=True`, the result includes original-to-normalized character s
 
 ### `model.available_voices`
 
-Returns a list of available voice names: `['Bella', 'Jasper', 'Luna', 'Bruno', 'Rosie', 'Hugo', 'Kiki', 'Leo']`
+For built-in models, returns the friendly voice aliases:
+`['Bella', 'Jasper', 'Luna', 'Bruno', 'Rosie', 'Hugo', 'Kiki', 'Leo']`.
+Native voice IDs such as `"expr-voice-5-m"` are also accepted.
 
 ## System Requirements
 

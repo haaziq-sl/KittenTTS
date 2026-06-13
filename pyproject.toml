@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "kittentts"
 version = "0.8.2"
-description = "Ultra-lightweight text-to-speech model with just 15 million parameters"
+description = "Ultra-lightweight text-to-speech models powered by native inference"
 readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "Apache 2.0"}
@@ -35,9 +35,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/kittenml/kittentts"
-Repository = "https://github.com/kittenml/kittentts"
-Issues = "https://github.com/kittenml/kittentts/issues"
+Homepage = "https://github.com/KittenML/KittenTTS"
+Repository = "https://github.com/KittenML/KittenTTS"
+Issues = "https://github.com/KittenML/KittenTTS/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]

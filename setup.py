@@ -8,10 +8,10 @@ setup(
     version="0.8.2",
     author="KittenML",
     author_email="",
-    description="Ultra-lightweight text-to-speech model with just 15 million parameters",
+    description="Ultra-lightweight text-to-speech models powered by native inference",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/kittenml/kittentts",
+    url="https://github.com/KittenML/KittenTTS",
     packages=find_packages(),
     include_package_data=True,
     package_data={"kittentts": ["*.json", "*.txt", "model_defs/*.json"]},
@@ -42,7 +42,7 @@ setup(
     ],
     keywords="text-to-speech, tts, speech-synthesis, neural-networks, native-inference, cpp",
     project_urls={
-        "Bug Reports": "https://github.com/kittenml/kittentts/issues",
-        "Source": "https://github.com/kittenml/kittentts",
+        "Bug Reports": "https://github.com/KittenML/KittenTTS/issues",
+        "Source": "https://github.com/KittenML/KittenTTS",
     },
 )
