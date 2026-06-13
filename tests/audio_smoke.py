@@ -65,14 +65,15 @@ def validate_audio(audio, label):
     return peak
 
 
-def synthesize(model_cache, out_dir, cache_dir, case):
+def synthesize(model_cache, out_dir, cache_dir, case, backend=None):
     model_name = case["model"]
-    model = model_cache.get(model_name)
+    cache_key = (model_name, backend or "default")
+    model = model_cache.get(cache_key)
     if model is None:
-        model = KittenTTS(model_name, cache_dir=str(cache_dir))
-        model_cache[model_name] = model
+        model = KittenTTS(model_name, cache_dir=str(cache_dir), backend=backend)
+        model_cache[cache_key] = model
 
-    label = f"{model_name} {case['voice']} speed={case['speed']}"
+    label = f"{model_name} {case['voice']} speed={case['speed']} backend={backend or 'default'}"
     audio = np.asarray(
         model.generate(TEXT, voice=case["voice"], speed=case["speed"]),
         dtype=np.float32,
@@ -83,6 +84,7 @@ def synthesize(model_cache, out_dir, cache_dir, case):
     sf.write(path, audio, SAMPLE_RATE)
     return {
         "model": model_name,
+        "backend": backend or "default",
         "voice": case["voice"],
         "speed": case["speed"],
         "path": str(path),
@@ -96,6 +98,7 @@ def main():
     parser = argparse.ArgumentParser(description="Generate KittenTTS release smoke audio.")
     parser.add_argument("--out-dir", default="audio-smoke")
     parser.add_argument("--cache-dir", default=".hf-cache")
+    parser.add_argument("--backend", default=None, help="Native backend to use, such as cpu or metal.")
     parser.add_argument(
         "--mode",
         choices=["quick", "release", "speed"],
@@ -113,13 +116,16 @@ def main():
     results = []
 
     if args.mode == "quick":
-        results.append(synthesize(model_cache, out_dir, cache_dir, QUICK_CASE))
+        results.append(synthesize(model_cache, out_dir, cache_dir, QUICK_CASE, args.backend))
     else:
         if args.mode == "release":
-            results.extend(synthesize(model_cache, out_dir, cache_dir, case) for case in CASES)
+            results.extend(
+                synthesize(model_cache, out_dir, cache_dir, case, args.backend)
+                for case in CASES
+            )
 
-        slow = synthesize(model_cache, out_dir, cache_dir, SPEED_CASES[0])
-        fast = synthesize(model_cache, out_dir, cache_dir, SPEED_CASES[1])
+        slow = synthesize(model_cache, out_dir, cache_dir, SPEED_CASES[0], args.backend)
+        fast = synthesize(model_cache, out_dir, cache_dir, SPEED_CASES[1], args.backend)
         if fast["samples"] >= slow["samples"]:
             raise AssertionError(
                 "speed smoke failed: faster audio should have fewer samples "

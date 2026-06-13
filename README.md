@@ -238,7 +238,7 @@ Native voice IDs such as `"expr-voice-5-m"` are also accepted.
 
 - **Operating system:** Linux x86_64, Linux ARM64, Windows x86_64, Windows ARM64, macOS x86_64, macOS ARM64/Apple Silicon, or Android ARM64/Termux for the current wheels
 - **Python:** CPython 3.8+ for KittenTTS; the native `kitten-inference` wheel must match your Python version and platform
-- **Hardware:** CPU by default; Metal on Apple Silicon with `backend="metal"`
+- **Hardware:** CPU by default; Metal on Apple Silicon with `backend="metal"` is covered by smoke tests on macOS ARM64 wheels, but full Metal performance/quality benchmarking is still limited
 - **Disk space:** Depends on the native model variant and weights bundle
 
 The current wheel set is not a universal hardware claim. Older x86 CPUs, older
