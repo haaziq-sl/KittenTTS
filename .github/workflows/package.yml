@@ -136,10 +136,10 @@ jobs:
             python-version: "3.14"
           - platform: Windows ARM64
             os: windows-11-vs2026-arm
-            python-version: "3.9"
+            python-version: "3.11"
           - platform: Windows ARM64
             os: windows-11-vs2026-arm
-            python-version: "3.11"
+            python-version: "3.12"
           - platform: Windows ARM64
             os: windows-11-vs2026-arm
             python-version: "3.14"

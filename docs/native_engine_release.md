@@ -41,7 +41,7 @@ The native engine GitHub Actions workflow builds:
 | Linux x86_64 CPU | `cp38` through `cp314` |
 | Linux ARM64 / aarch64 CPU | `cp38` through `cp314` |
 | Windows x86_64 CPU | `cp38` through `cp314` |
-| Windows ARM64 CPU | `cp39` through `cp314` |
+| Windows ARM64 CPU | `cp311` through `cp314` |
 | macOS ARM64 CPU/Metal | `cp38` through `cp314` |
 | macOS x86_64 CPU | `cp38` through `cp314` |
 | Android ARM64 / Termux | `cp313` experimental |
@@ -49,8 +49,8 @@ The native engine GitHub Actions workflow builds:
 Android starts at CPython 3.13 because those are the Android CPython tags
 available in current cibuildwheel releases. It is currently non-blocking for
 PyPI publishing while the Android CMake/Python development-header path is being
-stabilized. Windows ARM64 starts at CPython 3.9 because current cibuildwheel
-releases do not provide `cp38-win_arm64`.
+stabilized. Windows ARM64 starts at CPython 3.11 because that is the currently
+published Windows ARM64 wheel range.
 
 ARM64 wheels are built for modern ARMv8.2 dot-product-capable cores. Older ARM
 devices without dot-product support remain unvalidated.

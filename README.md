@@ -121,7 +121,7 @@ python -m pip install ~/storage/downloads/kittentts-0.8.2-py3-none-any.whl
 | Linux x86_64 CPU | CPython 3.8-3.14 | `kitten_inference-*-cp3*-cp3*-manylinux_*_x86_64.whl` |
 | Linux ARM64 / aarch64 CPU | CPython 3.8-3.14 | `kitten_inference-*-cp3*-cp3*-manylinux_*_aarch64.whl` |
 | Windows x86_64 CPU | CPython 3.8-3.14 | `kitten_inference-*-cp3*-cp3*-win_amd64.whl` |
-| Windows ARM64 CPU | CPython 3.9-3.14 | `kitten_inference-*-cp3*-cp3*-win_arm64.whl` |
+| Windows ARM64 CPU | CPython 3.11-3.14 | `kitten_inference-*-cp3*-cp3*-win_arm64.whl` |
 | macOS ARM64 / Apple Silicon CPU+Metal | CPython 3.8-3.14 | `kitten_inference-*-cp3*-cp3*-macosx_11_0_arm64.whl` |
 | macOS x86_64 / Intel CPU | CPython 3.8-3.14 | `kitten_inference-*-cp3*-cp3*-macosx_11_0_x86_64.whl` |
 | Android ARM64 / Termux | CPython 3.13 experimental | `kitten_inference-*-cp313-cp313-android_*_arm64_v8a.whl` |
