@@ -63,7 +63,9 @@ devices without dot-product support remain unvalidated.
 3. Build the `kittentts` pure Python wheel.
 4. Install `kittentts` in fresh environments and run the package/native import
    smoke tests.
-5. Run the audio smoke job. It installs the built `kittentts` wheel, resolves
-   `kitten-inference` from PyPI, generates WAV files for multiple nano voices
-   and model variants, and checks that faster speed settings produce shorter
-   audio than slower settings.
+5. Run the wheel audio smoke jobs. They install the built `kittentts` wheel,
+   resolve `kitten-inference` from PyPI, and generate a WAV sample for every
+   Linux, Windows, and macOS wheel/Python target. Linux tests explicitly
+   download both manylinux2014 and manylinux_2_28 wheel variants. The Android
+   job verifies the Termux wheel exists on PyPI; real Android audio generation
+   still needs a Termux device or Android runtime outside GitHub-hosted runners.

@@ -10,6 +10,12 @@ from kittentts import KittenTTS
 
 SAMPLE_RATE = 24000
 TEXT = "Kitten TTS is generating a short audio sample for release testing."
+QUICK_CASE = {
+    "model": "KittenML/kitten-tts-nano-0.1",
+    "voice": "Bella",
+    "speed": 1.0,
+    "filename": "quick-nano-bella.wav",
+}
 CASES = [
     {
         "model": "KittenML/kitten-tts-nano-0.1",
@@ -28,6 +34,20 @@ CASES = [
         "voice": "Luna",
         "speed": 0.85,
         "filename": "nano-int8-luna-slow.wav",
+    },
+]
+SPEED_CASES = [
+    {
+        "model": "KittenML/kitten-tts-nano-0.1",
+        "voice": "Kiki",
+        "speed": 0.75,
+        "filename": "speed-kiki-slow.wav",
+    },
+    {
+        "model": "KittenML/kitten-tts-nano-0.1",
+        "voice": "Kiki",
+        "speed": 1.25,
+        "filename": "speed-kiki-fast.wav",
     },
 ]
 
@@ -76,6 +96,12 @@ def main():
     parser = argparse.ArgumentParser(description="Generate KittenTTS release smoke audio.")
     parser.add_argument("--out-dir", default="audio-smoke")
     parser.add_argument("--cache-dir", default=".hf-cache")
+    parser.add_argument(
+        "--mode",
+        choices=["quick", "release", "speed"],
+        default="release",
+        help="quick generates one WAV; release generates voice/model samples plus speed check.",
+    )
     args = parser.parse_args()
 
     out_dir = Path(args.out_dir)
@@ -84,37 +110,23 @@ def main():
     cache_dir.mkdir(parents=True, exist_ok=True)
 
     model_cache = {}
-    results = [synthesize(model_cache, out_dir, cache_dir, case) for case in CASES]
+    results = []
 
-    slow = synthesize(
-        model_cache,
-        out_dir,
-        cache_dir,
-        {
-            "model": "KittenML/kitten-tts-nano-0.1",
-            "voice": "Kiki",
-            "speed": 0.75,
-            "filename": "speed-kiki-slow.wav",
-        },
-    )
-    fast = synthesize(
-        model_cache,
-        out_dir,
-        cache_dir,
-        {
-            "model": "KittenML/kitten-tts-nano-0.1",
-            "voice": "Kiki",
-            "speed": 1.25,
-            "filename": "speed-kiki-fast.wav",
-        },
-    )
-    if fast["samples"] >= slow["samples"]:
-        raise AssertionError(
-            "speed smoke failed: faster audio should have fewer samples "
-            f"(slow={slow['samples']}, fast={fast['samples']})"
-        )
+    if args.mode == "quick":
+        results.append(synthesize(model_cache, out_dir, cache_dir, QUICK_CASE))
+    else:
+        if args.mode == "release":
+            results.extend(synthesize(model_cache, out_dir, cache_dir, case) for case in CASES)
 
-    results.extend([slow, fast])
+        slow = synthesize(model_cache, out_dir, cache_dir, SPEED_CASES[0])
+        fast = synthesize(model_cache, out_dir, cache_dir, SPEED_CASES[1])
+        if fast["samples"] >= slow["samples"]:
+            raise AssertionError(
+                "speed smoke failed: faster audio should have fewer samples "
+                f"(slow={slow['samples']}, fast={fast['samples']})"
+            )
+        results.extend([slow, fast])
+
     summary_path = out_dir / "summary.json"
     summary_path.write_text(json.dumps(results, indent=2), encoding="utf-8")
     print(summary_path.read_text(encoding="utf-8"))
