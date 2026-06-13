@@ -1,6 +1,6 @@
 import json
 import os
-from importlib import resources
+from pathlib import Path
 from huggingface_hub import hf_hub_download
 from .cpp_model import KittenTTS_1_Cpp
 from .preprocess import normalize_text
@@ -157,7 +157,7 @@ def _download_file(repo_id, filename, cache_dir):
 
 
 def _builtin_arch_path(filename):
-    return str(resources.files("kittentts").joinpath("model_defs", filename))
+    return str(Path(__file__).resolve().parent.joinpath("model_defs", filename))
 
 
 def _builtin_native_spec(repo_id):
